@@ -4,13 +4,26 @@
 
 	$downloadURL = $_REQUEST['DownloadURL'];
 
+	if (!filter_var($downloadURL,FILTER_VALIDATE_URL)) {
+		http_response_code(400);
+		die ("No valid URL Given");
+	}
 
+	$client = new \GuzzleHttp\Client();
+	$tempFilePath = tempnam("/tmp", 'xsl2xml');
+
+	$response = $client->request("GET",$downloadURL, ['sink' => $tempFilePath]);
+
+	if ($response->getStatusCode() != 200)  {
+		http_response_code(504);
+		die ("Could not download $DownloadURL");
+	}
 
 
 	$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
 
 	$reader->setReadDataOnly(true);
-	$spreadsheet = $reader->load($downloadURL);
+	$spreadsheet = $reader->load($tempFilePath);
 
 
 	$xml = new XMLWriter();
