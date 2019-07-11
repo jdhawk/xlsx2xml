@@ -1,5 +1,9 @@
 <?php
 	require 'vendor/autoload.php';
+	use \PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+	use \PhpOffice\PhpSpreadsheet\Worksheet\CellIterator;
+	use \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+	use \PhpOffice\PhpSpreadsheet\IOFactory;
 
 	$downloadURL = $_REQUEST['DownloadURL'];
 
@@ -19,7 +23,7 @@
 	}
 
 
-	$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
+	$reader = IOFactory::createReader("Xlsx");
 
 	$reader->setReadDataOnly(true);
 	$spreadsheet = $reader->load($tempFilePath);
@@ -29,20 +33,19 @@
 	$xml->openMemory();
 	$xml->startDocument('1.0','UTF-8');
 	$xml->startElement('spreadsheet');
-	/** @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $Worksheet */
+	/** @var Worksheet $Worksheet */
 	foreach ($spreadsheet->getAllSheets() as $worksheet) {
-		$headers = [];
 		$xml->startElement($worksheet->getTitle());
-
-		foreach ($worksheet->toArray() as $i => $row) {
-			if ($i == 0) {
-				$headers = $row;
+		foreach ($worksheet->getRowIterator() as $row) {
+			if ($row->getRowIndex() == 1) {
 				continue;
 			}
 			$xml->startElement('row');
-			foreach ($row as $key=>$value) {
-				$xml->startElement($headers[$key]);
-				$xml->writeCdata($value);
+			/** @var CellIterator $cell */
+			foreach ($row->getCellIterator() as $cell) {
+				$cell->setIterateOnlyExistingCells(false);
+				$xml->startElement($worksheet->getCellByColumnAndRow(1,Coordinate::columnIndexFromString($cell->getColumn()))->getValue());
+				$xml->writeCdata($cell->getFormattedValue());
 				$xml->endElement();
 			}
 			$xml->endElement();
