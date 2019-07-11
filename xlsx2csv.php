@@ -41,9 +41,8 @@
 				continue;
 			}
 			$xml->startElement('row');
-			/** @var CellIterator $cell */
-			foreach ($row->getCellIterator() as $cell) {
-				$cell->setIterateOnlyExistingCells(false);
+			$cellIterator = $row->getCellIterator();
+			foreach ($cellIterator as $cell) {
 				$xml->startElement($worksheet->getCellByColumnAndRow(1,Coordinate::columnIndexFromString($cell->getColumn()))->getValue());
 				$xml->writeCdata($cell->getFormattedValue());
 				$xml->endElement();
