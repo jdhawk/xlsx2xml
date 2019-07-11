@@ -32,7 +32,6 @@
 	/** @var \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $Worksheet */
 	foreach ($spreadsheet->getAllSheets() as $worksheet) {
 		$headers = [];
-		print ("Writing Sheet : {$worksheet->getTitle()}...\n");
 		$xml->startElement($worksheet->getTitle());
 
 		foreach ($worksheet->toArray() as $i => $row) {
