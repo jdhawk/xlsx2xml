@@ -24,7 +24,7 @@
 	$reader->setReadDataOnly(true);
 	$spreadsheet = $reader->load($tempFilePath);
 
-
+	header ('Content-Type: application/xml');
 	$xml = new XMLWriter();
 	$xml->openMemory();
 	$xml->startDocument('1.0','UTF-8');
@@ -57,4 +57,4 @@
 	$xml->endElement();
 	echo $xml->flush(true);
 
-
+	unlink($tempFilePath);
