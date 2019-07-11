@@ -25,7 +25,7 @@
 
 	$reader = IOFactory::createReader("Xlsx");
 
-	$reader->setReadDataOnly(true);
+	//$reader->setReadDataOnly(true);
 	$spreadsheet = $reader->load($tempFilePath);
 
 	header ('Content-Type: application/xml');
