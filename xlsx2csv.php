@@ -43,7 +43,8 @@
 			$xml->startElement('row');
 			$cellIterator = $row->getCellIterator();
 			foreach ($cellIterator as $cell) {
-				$xml->startElement($worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString(),1)->getValue()?:$cell->getColumn());
+				$elementName = $worksheet->getCellByColumnAndRow(Coordinate::columnIndexFromString($cell->getColumn()),1)->getValue() ?: $cell->getColumn();
+				$xml->startElement($elementName);
 				$xml->writeCdata($cell->getFormattedValue());
 				$xml->endElement();
 			}
