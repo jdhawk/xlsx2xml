@@ -9,7 +9,7 @@
 	}
 
 	$client = new \GuzzleHttp\Client();
-	$tempFilePath = tempnam("/tmp", 'xsl2xml');
+	$tempFilePath = tempnam("/tmp", 'xlsx2xml');
 
 	$response = $client->request("GET",$downloadURL, ['sink' => $tempFilePath]);
 
