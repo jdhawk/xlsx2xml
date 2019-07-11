@@ -1,0 +1,16 @@
+{
+	"name":              "jdhawk/xlsx2xml",
+	"description":       "Convert an XLSX file to an XML file",
+	"minimum-stability": "stable",
+	"license":           "proprietary",
+	"authors":           [
+		{
+			"name":  "Dustin Hawkins",
+			"email": "jdhawk@dh0.net"
+		}
+	],
+	"require": {
+		"phpoffice/phpspreadsheet": "^1.8",
+		"guzzlehttp/guzzle": "^6.3"
+	}
+}
